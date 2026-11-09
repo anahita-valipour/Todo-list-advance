@@ -1,362 +1,308 @@
-/* * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+:root {
+  --bg: #eef0fb;
+  --bg-glow-1: rgba(108, 92, 231, 0.22);
+  --bg-glow-2: rgba(56, 189, 248, 0.2);
+  --card: rgba(255, 255, 255, 0.85);
+  --text: #22252f;
+  --muted: #7a8094;
+  --border: #e1e4ef;
+  --accent: #6c5ce7;
+  --low: #2eb67d;
+  --medium: #f5a524;
+  --high: #ef4f5f;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-    transition: background-color 0.3s, color 0.3s;
+body.dark-mode {
+  --bg: #12131c;
+  --bg-glow-1: rgba(143, 130, 255, 0.18);
+  --bg-glow-2: rgba(56, 189, 248, 0.1);
+  --card: rgba(31, 34, 45, 0.85);
+  --text: #eceef5;
+  --muted: #959bb0;
+  --border: #323648;
+  --accent: #8f82ff;
 }
-
-.dark-mode {
-    background-color: #333;
-    color: #f4f4f4;
-}
-
-.container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 20px auto;
-}
-
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#addTaskSection {
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-}
-
-#addTaskSection input, #addTaskSection select, #addTaskSection textarea {
-    margin-right: 10px;
-    margin-bottom: 10px;
-    padding: 8px;
-    font-size: 1rem;
-}
-
-#taskListContainer {
-    margin-top: 20px;
-}
-
-.task-category {
-    margin-bottom: 20px;
-}
-
-.task {
-    background-color: #fff;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    border-left: 5px solid #ddd;
-    cursor: grab;
-    display: flex;
-    justify-content: space-between;
-}
-
-.task.high {
-    border-color: red;
-}
-
-.task.medium {
-    border-color: orange;
-}
-
-.task.low {
-    border-color: green;
-}
-
-.completed {
-    text-decoration: line-through;
-    background-color: #e0e0e0;
-}
-
-button {
-    padding: 10px 15px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-.completed {
-    background-color: #d4edda;
-    text-decoration: line-through;
-    color: #6c757d;
-    border-color: #c3e6cb;
-}
-
-.task {
-    cursor: grab;
-}
-
-.dragging {
-    opacity: 0.5;
-}
-
-.dropzone {
-    background-color: #f1f1f1;
-    padding: 20px;
-    border: 2px dashed #ddd;
-}
-
-@media (max-width: 600px) {
-    #addTaskSection {
-        flex-direction: column;
-    }
-}
- */
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
 body {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  background-color: #f0f4fa; /* تغییر به رنگ آبی خیلی روشن */
-  color: #333;
+  min-height: 100vh;
+  font-family: system-ui, "Segoe UI", Tahoma, sans-serif;
+  color: var(--text);
+  background-color: var(--bg);
+  background-image: radial-gradient(
+      circle at 12% 8%,
+      var(--bg-glow-1),
+      transparent 45%
+    ),
+    radial-gradient(circle at 88% 92%, var(--bg-glow-2), transparent 45%);
+  background-attachment: fixed;
   transition: background-color 0.3s, color 0.3s;
 }
-
-.dark-mode {
-  background-color: #333;
-  /* color: #f4f4f4; */
-}
-
 .container {
-  width: 90%;
-  max-width: 1200px;
-  margin: 20px auto;
+  width: 92%;
+  max-width: 1000px;
+  margin: 40px auto 60px;
 }
 
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-#addTaskSection {
-  display: flex;
   flex-wrap: wrap;
-  margin-bottom: 20px;
+  gap: 12px;
+  margin-bottom: 28px;
 }
 
-#addTaskSection input,
-#addTaskSection select,
-#addTaskSection textarea {
-  margin-right: 10px;
-  margin-bottom: 10px;
-  padding: 8px;
-  font-size: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #fff;
-  resize: none;
+header h1 {
+  font-size: 2rem;
+  font-weight: 700;
 }
 
-#taskListContainer {
-  margin-top: 20px;
-}
-
-.task-category {
-  margin-bottom: 20px;
-}
-
-.task {
-  background-color: #fff;
-  padding: 15px;
-  margin-bottom: 10px;
-  border-radius: 10px;
-  border-left: 5px solid #ddd;
-  cursor: grab;
-  display: flex;
-  justify-content: space-between;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.task.high {
-  border-color: #ff6b6b; /* قرمز روشن (برگرفته از تصویر) */
-}
-
-.task.medium {
-  border-color: #ffa500; /* نارنجی روشن */
-}
-
-.task.low {
-  border-color: #56d798; /* سبز ملایم (برگرفته از تصویر) */
-}
-
-.completed {
-  /* text-decoration: line-through; */
-  background-color: #e0f7fa; /* تغییر رنگ برای حالت کامل‌شده */
-  border-color: #aed581; /* رنگ سبز برای وظایف کامل‌شده */
-}
-
+/* buttons */
 button {
-  height: 53px;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
+  padding: 10px 18px;
+  font: inherit;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--accent);
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
+  transition: transform 0.15s, opacity 0.2s;
 }
 
 button:hover {
-  background-color: #0056b3;
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+#darkModeToggle {
+  color: var(--text);
+  background-color: transparent;
+  border: 1px solid var(--border);
 }
 
 #exportTasksBtn {
-  background-color: #ffa500; /* رنگ نارنجی برای دکمه خروجی */
+  background-color: var(--text);
+  color: var(--bg);
+}
+
+/* inputs */
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  font: inherit;
+  color: var(--text);
+  background-color: var(--card);
+  border: 1px solid var(--border);
   border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-#exportTasksBtn:hover {
-  background-color: #ff7800; /* رنگ نارنجی تیره‌تر هنگام هاور */
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.18);
 }
 
+textarea {
+  height: 44px;
+  resize: none;
+}
 
+/* add task form */
+#addTaskSection {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 18px;
+  padding: 22px;
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+#taskNotes {
+  grid-column: span 2;
+}
+
+#addTaskBtn {
+  white-space: nowrap;
+}
+
+/* filters */
+#filterSection {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+#searchTasks {
+  flex: 1 1 220px;
+  width: auto;
+}
+
+#filterPriority,
+#sortByDate {
+  width: auto;
+}
+
+/* task cards */
+#taskCategories {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+#taskCategories:empty::before {
+  content: "No tasks yet. Add your first one above.";
+  grid-column: 1 / -1;
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--muted);
+  border: 2px dashed var(--border);
+  border-radius: 14px;
+}
 
 .task {
-  cursor: grab;
+  --color: var(--low);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px;
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-left: 5px solid var(--color);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
 }
 
-.dragging {
-  opacity: 0.5;
+.task:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
 }
 
-.dropzone {
-  background-color: #f1f1f1;
-  padding: 20px;
-  border: 2px dashed #ddd;
+.task.low {
+  --color: var(--low);
 }
-/* استایل برای ورودی جستجو */
-#searchTasks {
-  padding: 10px 15px;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  width: 100%;
-  max-width: 300px;
-  font-size: 1rem;
-  outline: none;
-  transition: border 0.3s ease;
+.task.medium {
+  --color: var(--medium);
+}
+.task.high {
+  --color: var(--high);
 }
 
-#searchTasks:focus {
-  border-color: #56d798; /* سبز ملایم */
+.task p {
+  order: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
 }
 
-/* استایل برای چک‌باکس‌های اولویت */
-#filterPriority,#sortByDate {
-  padding: 10px;
-  border-radius: 8px;
-  border: 2px solid #ddd;
-  font-size: 1rem;
-  background-color: #fff;
-  transition: border 0.3s ease;
-  outline: none;
+.task::after {
+  order: 1;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color);
 }
 
-#filterPriority:focus {
-  border-color: #ffa500; /* نارنجی */
+.task.low::after {
+  content: "Low priority";
 }
-#sortByDate:focus{
-  border-color: #ff4c4c;
+.task.medium::after {
+  content: "Medium priority";
 }
-/* استایل برای چک‌باکس‌های اولویت در قسمت افزودن تسک‌ها */
-#taskPriority {
-  padding: 10px;
-  border-radius: 8px;
-  border: 2px solid #ddd;
-  font-size: 1rem;
-  background-color: #fff;
-  transition: border 0.3s ease;
-  outline: none;
+.task.high::after {
+  content: "High priority";
 }
 
-#taskPriority:focus {
-  border-color: #ff6b6b; /* قرمز روشن */
+.task > div {
+  order: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
 }
 
-/* دکمه خروجی گرفتن */
-#exportTasksBtn {
-  background-color: #ffa500;
-  height: 42px;
+/* the JS prints raw text on these buttons, so hide it and draw our own labels */
+.task button {
+  font-size: 0;
+  padding: 6px 12px;
+  color: var(--text);
+  background-color: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
 }
 
-#exportTasksBtn:hover {
-  background-color: #ff7800;
+.task button::before {
+  font-size: 0.8rem;
+  font-weight: 600;
 }
 
-/* استایل برای دکمه Delete */
-.delete-btn {
-  padding: 10px 15px;
-  background-color: #ff6b6b; /* قرمز روشن برای حذف */
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-  margin-left: 10px;
+.task button:hover {
+  background-color: var(--bg);
+  opacity: 1;
+}
+
+.complete-btn::before {
+  content: "✓ Done";
+}
+.edit-btn::before {
+  content: "✎ Edit";
+}
+.delete-btn::before {
+  content: "✕ Delete";
 }
 
 .delete-btn:hover {
-  background-color: #ff4c4c; /* قرمز تیره‌تر هنگام هاور */
+  color: var(--high);
+  border-color: var(--high);
 }
 
-.delete-btn:active {
-  background-color: #ff1f1f; /* قرمز تیره‌تر هنگام کلیک */
-}
-/* استایل برای دکمه Complete */
-.complete-btn {
-  padding: 10px 15px;
-  background-color: #28a745; /* سبز روشن برای دکمه Complete */
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
+/* completed */
+.task.completed {
+  opacity: 0.55;
 }
 
-.complete-btn:hover {
-    background-color: #218838; /* سبز تیره‌تر هنگام هاور */
+.completed p {
+  text-decoration: line-through;
 }
 
-.complete-btn:active {
-  background-color: #1e7e34; /* سبز تیره‌تر هنگام کلیک */
+.task.completed::after {
+  content: "Finished";
+  color: var(--muted);
 }
 
-/* استایل برای دکمه Completed */
-.completed .complete-btn {
-  background-color: #007bff; /* آبی برای وظایف کامل‌شده */
+.completed .complete-btn::before {
+  content: "↺ Reopen";
 }
 
-.completed .complete-btn:hover {
-  background-color: #0056b3; /* آبی تیره‌تر برای وظایف کامل‌شده هنگام هاور */
-}
-.completed span{
-    text-decoration: line-through;
-
-}
-/* Responsive design */
-@media (max-width: 600px) {
+@media (max-width: 700px) {
   #addTaskSection {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+  }
+
+  #taskNotes {
+    grid-column: auto;
+  }
+
+  #filterPriority,
+  #sortByDate {
+    flex: 1 1 140px;
   }
 }
